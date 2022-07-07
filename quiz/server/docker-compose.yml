@@ -1,0 +1,23 @@
+version: '3.8'
+services: 
+  database:
+    image: mongo
+    restart: always 
+    environment: 
+      MONGO_INITDB_DB: "${MONGO_DB}"
+    volumes: 
+      - ./data:/data/db
+    ports:
+      - 27017:27017
+
+  server:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    depends_on: 
+      - database
+    volumes: 
+      - /app/node_modules
+      - ./:/app
+    ports: 
+      - 3010:3010
